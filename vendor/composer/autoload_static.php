@@ -26,6 +26,10 @@ class ComposerStaticInite69e44c33f47bbf346dab01e67ab6f02
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
         ),
+        'P' => 
+        array (
+            'Psr\\Container\\' => 14,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -45,6 +49,10 @@ class ComposerStaticInite69e44c33f47bbf346dab01e67ab6f02
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
         ),
+        'Psr\\Container\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/container/src',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -52,6 +60,13 @@ class ComposerStaticInite69e44c33f47bbf346dab01e67ab6f02
     );
 
     public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Pimple' => 
+            array (
+                0 => __DIR__ . '/..' . '/pimple/pimple/src',
+            ),
+        ),
         'B' => 
         array (
             'Bramus' => 
