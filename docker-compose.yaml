@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: php_app
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
     environment:
       PHP_IDE_CONFIG: "serverName=docker"
       XDEBUG_MODE: "develop,debug"
@@ -21,7 +21,7 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./src:/var/www/html
+      - .:/var/www/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - app
