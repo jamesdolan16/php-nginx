@@ -6,10 +6,11 @@ use Pimple\Container;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use App\Controllers\HomeController;
+use App\Services\AuthService;
 
 $container = new Container();
+// Define services
 
-// Define twig service
 $container['twig'] = function () {
     $loader = new FilesystemLoader(__DIR__ . '/../templates');
     return new Environment($loader, [
@@ -18,10 +19,9 @@ $container['twig'] = function () {
     ]);
 };
 
-// Define HomeController service
-$container['HomeController'] = function($c) {
-    return new HomeController($c['twig']);
-};
+$container['auth'] = fn($c) => new AuthService();
+
+$container['HomeController'] = fn($c) => new HomeController($c['twig'], $c['auth']);
 
 // Initialize Router
 $router = new Router();
@@ -38,3 +38,36 @@ $router->set404(function() {
 });
 
 $router->run();
+
+function resolve(string $class, Container $c) {
+    $refClass = new ReflectionClass($class);
+    $constructor = $refClass->getConstructor();
+
+    if (!$constructor) {
+        return new $class();
+    }
+
+    $deps = [];
+    foreach ($constructor->getParameters() as $param) {
+        $type = $param->getType();
+
+        if ($type && !$type->isBuiltin()) {
+            $fqcn = $type->getName();
+
+            // Look for service in container by FQCN or alias
+            foreach ($c->keys() as $key) {
+                if ($c[$key] instanceof $fqcn) {
+                    $deps[] = $c[$key];
+                    continue 2;
+                }
+            }
+
+            throw new RuntimeException("No service found for dependency $fqcn");
+        }
+
+        // Optional: handle scalars or defaults
+        $deps[] = $param->isDefaultValueAvailable() ? $param->getDefaultValue() : null;
+    }
+
+    return $refClass->newInstanceArgs($deps);
+}
