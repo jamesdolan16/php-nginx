@@ -1,0 +1,33 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: php_app
+    volumes:
+      - ./src:/var/www/html
+    environment:
+      PHP_IDE_CONFIG: "serverName=docker"
+      XDEBUG_MODE: "develop,debug"
+      XDEBUG_CONFIG: "client_host=host.docker.internal client_port=9003"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - devnet
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx_web
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+    networks:
+      - devnet
+
+networks:
+  devnet:
+    driver: bridge
