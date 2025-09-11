@@ -5,16 +5,12 @@ namespace App\Controllers;
 use Twig\Environment;
 use App\Services\AuthService;
 
-class HomeController extends BaseController
+final class HomeController extends BaseController
 {
-    protected $twig;
-    protected $auth;
-
-    public function __construct(Environment $twig, AuthService $auth)
-    {
-        $this->twig = $twig;
-        $this->auth = $auth;
-    }
+    public function __construct(
+        public Environment $twig, 
+        public AuthService $auth
+    ){}
 
     public function index()
     {
@@ -31,11 +27,11 @@ class HomeController extends BaseController
             echo '403 - Access denied';
             return;
         }
-        echo $this->twig->render('about.twig');
+        echo $this->twig->render('about.html.twig');
     }
 
     public function greet($name)
     {
-        echo $this->twig->render('greet.twig', ['name' => ucfirst($name)]);
+        echo $this->twig->render('greet.html.twig', ['name' => ucfirst($name)]);
     }
 }

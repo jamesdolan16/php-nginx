@@ -29,12 +29,12 @@ $router = new Router();
 $router->get('/', [$container['HomeController'], 'index']);
 $router->get('/about', [$container['HomeController'], 'about']);
 $router->get('/greet/(\w+)', function($name) use ($container) {
-    return $container['HomeController']->greet($name);
+    $container['HomeController']->greet($name);
 });
 
-$router->set404(function() {
+$router->set404(function() use ($container) {
     header('HTTP/1.1 404 Not Found');
-    echo '404 - Page not found';
+    echo $container['twig']->render('404.html.twig');
 });
 
 $router->run();

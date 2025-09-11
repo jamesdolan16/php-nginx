@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <h1>{{ user.username|e }}</h1>
+    <table>
+        <tr>
+            <th>ID</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>Roles</th>
+            <td>{% for role in user.roles %}
+                {{ role }}&nbsp;
+            {% endfor %}</td>
+        </tr>
+    </table>
+{% endblock %}

@@ -4,9 +4,6 @@ namespace App\Models;
 
 class User
 {
-    /**
-     * @phpstan-property int $id
-     */
     public int $id;
     public string $username;
     public array $roles;
